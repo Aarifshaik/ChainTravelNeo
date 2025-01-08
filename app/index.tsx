@@ -6,9 +6,10 @@ import { TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ThemeContext,AuthContext } from './_layout';
 import { YStack } from 'tamagui';
+import { Theme } from 'tamagui';
 
 export default function Login() {
-    const { currentTheme,toggleTheme } = useContext(ThemeContext);
+    const { currentTheme,currentColor,toggleTheme,togglePalette } = useContext(ThemeContext);
     const { isAuthenticated, signOut } = useContext(AuthContext);
     const SunnyColor = currentTheme === 'light' ? '#1b1f24' : '#f8f9fa'
     const [appMounted, setAppMounted] = useState(false);
@@ -31,6 +32,7 @@ export default function Login() {
     }
 
     return (
+        <Theme name={currentColor}>
         <YStack flex={1} ai="center" jc="center" bg="$background" padding="$6">
             <YStack
                 position="absolute"
@@ -38,11 +40,12 @@ export default function Login() {
                 right={10}
                 zIndex={1} // Ensure it stays on top
             >
-                <TouchableOpacity onPress={toggleTheme}>
+                <TouchableOpacity onPress={toggleTheme} onLongPress={togglePalette}>
                     <Ionicons name="sunny-outline" size={30} color={SunnyColor} />
                 </TouchableOpacity>
             </YStack>
             <SignInScreen />
         </YStack>
+        </Theme>
     );
 }

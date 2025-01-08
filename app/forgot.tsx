@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 
 export default function App() {
   const router = useRouter();
-  const animation = useRef<LottieView>(null);
+  // const animation = useRef<LottieView>(null);
   let devanimation: LottieView;
   interface AnimationRef {
     play: () => void;

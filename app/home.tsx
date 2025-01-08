@@ -1,21 +1,20 @@
-import { useRouter } from 'expo-router';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
-import { Image } from 'react-native';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { useContext } from 'react';
-import { AuthContext } from './_layout';
-import { ThemeContext } from './_layout';
+import { AuthContext, ThemeContext } from './_layout';
+import { useRouter } from 'expo-router';
+import darkModeStyle from '../assets/darkModeStyle.json';
+import uber from '../assets/Uber.json';
 
 export default function Mao() {
   const router = useRouter();
-  const { currentTheme,toggleTheme } = useContext(ThemeContext);
+  const { currentTheme,currentColor,toggleTheme,togglePalette } = useContext(ThemeContext);
   const SunnyColor = currentTheme === 'light' ? '#1b1f24' : '#f8f9fa'
-  const {signOut} = useContext(AuthContext);
+  const { signOut } = useContext(AuthContext);
+  const [refresh, setRefresh] = useState(false);
   const [initialRegion, setInitialRegion] = useState<{
     latitude: number;
     longitude: number;
@@ -23,7 +22,11 @@ export default function Mao() {
     longitudeDelta: number;
   } | null>(null);
 
+  const [markers, setMarkers] = useState([
+    { id: 1, latitude: 16.524391, longitude: 80.627509 },
+  ]);
 
+  // Fetch location on mount or refresh
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -39,7 +42,6 @@ export default function Mao() {
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
       });
-      // console.log(location);
       setMarkers((prevMarkers) =>
         prevMarkers.map((marker) => ({
           ...marker,
@@ -48,44 +50,39 @@ export default function Mao() {
         }))
       );
     })();
-  }, []);
+  }, [refresh]);
 
+  // Logout handler
   const handleLogout = async () => {
     await signOut();
     router.replace('/');
   };
 
-
-  const [markers, setMarkers] = useState([
-    { id: 1, latitude: 16.524391, longitude: 80.627509 },
-  ]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setMarkers((prevMarkers) =>
-  //       prevMarkers.map((marker) => ({
-  //         ...marker,
-  //         latitude: marker.latitude + Math.random() * 0.0002 - 0.00001, // Random movement in latitude
-  //         longitude: marker.longitude + Math.random() * 0.0002 - 0.00001, // Random movement in longitude
-  //       }))
-  //     );
-  //   }, 1000);
-  //   return () => clearInterval(interval); // Cleanup interval on component unmount
-  // }, []);
+  // Refresh handler
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev); // Trigger rerender
+  };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity 
-      onPress={handleLogout}
-        style={styles.signOutButton}
-        >
-        <Ionicons name="sunny-outline" size={30} color={SunnyColor} />
+    <View style={styles.container} key={refresh ? 1 : 0}>
+      {/* Logout Button */}
+      <TouchableOpacity onPress={handleLogout} style={styles.signOutButton}>
+        <Ionicons name="log-out-outline" size={30} color={SunnyColor} />
       </TouchableOpacity>
+
+      {/* Refresh Button */}
+      <TouchableOpacity onPress={handleRefresh} style={styles.refreshButton}>
+        <Ionicons name="refresh-outline" size={30} color={SunnyColor} />
+      </TouchableOpacity>
+
       {initialRegion && (
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={initialRegion}
+          // customMapStyle={darkModeStyle}
+          // customMapStyle={uber}
+          // customMapStyle={currentTheme === 'dark' ? darkModeStyle : uber}
         >
           {markers.map((marker) => (
             <Marker
@@ -95,7 +92,7 @@ export default function Mao() {
                 longitude: marker.longitude,
               }}
               title={`Marker ${marker.id}`}
-              description={`Moving marker ${marker.id}`}
+              description={`Location for marker ${marker.id}`}
             >
               <Image
                 source={require('../assets/bus.png')}
@@ -118,6 +115,12 @@ const styles = StyleSheet.create({
   signOutButton: {
     position: 'absolute',
     top: 15,
+    right: 15,
+    zIndex: 1,
+  },
+  refreshButton: {
+    position: 'absolute',
+    top: 60,
     right: 15,
     zIndex: 1,
   },

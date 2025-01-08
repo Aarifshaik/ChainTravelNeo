@@ -164,7 +164,7 @@ export const GoogleSignIn = async () => {
         // Configure Google Sign-In
         GoogleSignin.configure({
             scopes: ['profile', 'email'], // Scopes you need
-            webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID_WEB, // Replace with your actual Web Client ID
+            webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID_NEW, // Replace with your actual Web Client ID
             
             // offlineAccess: true,
             // forceCodeForRefreshToken: true,
@@ -202,6 +202,7 @@ export const GoogleSignIn = async () => {
             return { status: 'error', message: 'Play services not available or outdated.' };
         } else {
             // Catch other errors (including network or unknown)
+            console.log('Error during Google sign-in:', error);
             return { status: 'error', message: (error as any).message || 'An unexpected error occurred.' };
         }
     }

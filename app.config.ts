@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       bundler: "metro",
       output: "static",
       favicon: "./assets/favicon.png",
+      
     },
     plugins: [
       "expo-router",
@@ -37,8 +38,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
     splash: {
-      // image: "./assets/splash.png",
-      // resizeMode: "contain",
+      image: "./assets/splash.png",
+      resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
     assetBundlePatterns: ["**/*"],
@@ -69,7 +70,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         origin: false,
       },
       eas: {
-        // projectId: "9a0b6ae7-eb62-4715-9551-c24f67a70141",
         "projectId": "0e2708c6-9c6a-4ffe-bc70-b10f856b585f",
       },
     },

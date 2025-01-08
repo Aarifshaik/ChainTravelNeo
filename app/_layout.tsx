@@ -17,7 +17,9 @@ export const AuthContext = createContext({
 
 export const ThemeContext = createContext({
   currentTheme: 'light' as ThemeName,
+  currentColor: 'blue' as 'blue' | 'red' | 'yellow' | 'green' | 'dark'| 'light',
   toggleTheme: () => {},
+  togglePalette: () => {},
 });
 
 export default function RootLayout() {
@@ -35,17 +37,47 @@ export default function RootLayout() {
     prepareApp();
   }, []);
 
+  const [currentTheme, setCurrentTheme] = useState<ThemeName>('light');
+
+  const [currentColor, setCurrentColor] = useState<'blue' | 'red'| 'dark' | 'light'| 'yellow' | 'green'>('blue'); // Default color
+
+  // Toggle between different color palettes
+  const togglePalette = () => {
+    switch (currentColor) {
+      case 'blue':
+        setCurrentColor('red');
+        break;
+      case 'red':
+        setCurrentColor('yellow');
+        break;
+      case 'yellow':
+        setCurrentColor('green');
+        break;
+      case 'green':
+        setCurrentColor('dark');
+        break;
+      case 'dark':
+        setCurrentColor('light');
+        break;
+      case 'light':
+        setCurrentColor('blue');
+        break;
+      default:
+        setCurrentColor('blue');
+    }
+  };
+
+  const toggleTheme = () => {
+    console.log('Theme Changed');
+    setCurrentTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
 
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<ThemeName>('light');
-
-  const toggleTheme = () => {
-    setCurrentTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
 
   useEffect(() => {
     if (loaded) SplashScreen.hideAsync();
@@ -102,7 +134,7 @@ export default function RootLayout() {
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, signOut }}>
-      <ThemeContext.Provider value={{ currentTheme, toggleTheme }}>
+      <ThemeContext.Provider value={{ currentTheme,currentColor, toggleTheme,togglePalette }}>
       <TamaguiProvider config={config}>
         <Theme name={currentTheme}>
         {!appReady ? (

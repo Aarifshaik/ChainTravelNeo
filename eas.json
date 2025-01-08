@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env":{
-        "App_Id":"com.aarif1419.ChainTravelNeo_Prod"
+        "App_Id":"com.aarif1419.ChainTravelNeo.Prod"
       }
     }
   },

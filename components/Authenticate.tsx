@@ -313,7 +313,7 @@ export function SignInScreen(){
             </View>
           </Theme>
         </View>
-        <SignUpLink press={()=> router.push("/")}/>
+        <SignUpLink press={()=> router.push("/signup")}/>
         <PhoneLink press={setOpenModal}/>
       </View>
     </FormCard>
