@@ -1,0 +1,9 @@
+copy to wsl
+C:\Users\Administrator\Desktop\ChainTravelNeo
+rsync -av --exclude=node_modules "/mnt/c/Users/Administrator/Desktop/ChainTravelNeo" ~/
+
+
+
+
+copy from wsl
+rsync -av --exclude 'node_modules' /home/aarifshaik/ChainTravelNeo/ /mnt/c/Users/<YourWindowsUsername>/Desktop/ChainTravelNeo/

@@ -20,8 +20,8 @@ export default function Login() {
 
     useEffect(() => {
         if (isAuthenticated && appMounted) {
-            // router.replace('/home'); // Navigate only after the app has mounted
-            router.replace('/_sitemap');
+            router.replace('/home'); // Navigate only after the app has mounted
+            // router.replace('/_sitemap');
         }
     }, [isAuthenticated, appMounted, router]);
 
