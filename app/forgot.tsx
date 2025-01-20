@@ -24,7 +24,7 @@ export default function App() {
     <View style={styles.animationContainer}>
       <LottieView
         autoPlay
-        loop={false}
+        loop={true}
         ref={(animation) => {
           devanimation = animation as LottieView;
 
@@ -34,7 +34,7 @@ export default function App() {
           height: 600,
           backgroundColor: '#eee',
         }}
-        source={require('../assets/verify.json')}
+        source={require('../assets/locationPin.json')}
       />
       <View style={styles.buttonContainer}>
         <Button 
