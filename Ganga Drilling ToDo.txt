@@ -1,0 +1,7 @@
+Todo:
+Implement Click To Mark Location.
+Implement Truck location. ------> Selection and viewing
+Implement Site Location. -------> Selection and viewing
+Implement prices and no of workers assigned to each site. ---------> Selection and viewing
+Implement Send pings about location.
+Implement per truck info like fuel and maintenance.
